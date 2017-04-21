@@ -42,6 +42,10 @@ TEXT_OFFSET := 0x00080000
 
 export	TEXT_OFFSET GZFLAGS
 
+ifeq ($(cc-name),clang)
+KBUILD_CFLAGS += $(call cc-disable-warning, asm-operand-widths)
+endif
+
 core-y		+= arch/arm64/kernel/ arch/arm64/mm/
 core-$(CONFIG_XEN)		+= arch/arm64/xen/
 core-$(CONFIG_KVM) += arch/arm64/kvm/
