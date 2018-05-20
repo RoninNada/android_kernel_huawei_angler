@@ -106,11 +106,11 @@ void ion_cp_heap_get_base(struct ion_heap *heap, unsigned long *base,
 
 void ion_mem_map_show(struct ion_heap *heap);
 
-int ion_heap_allow_secure_allocation(enum ion_heap_type type);
+int ion_heap_allow_secure_allocation(unsigned int type);
 
-int ion_heap_allow_heap_secure(enum ion_heap_type type);
+int ion_heap_allow_heap_secure(unsigned int type);
 
-int ion_heap_allow_handle_secure(enum ion_heap_type type);
+int ion_heap_allow_handle_secure(unsigned int type);
 
 /**
  * ion_create_chunked_sg_table - helper function to create sg table

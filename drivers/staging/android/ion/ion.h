@@ -52,7 +52,7 @@ struct ion_buffer;
  * Provided by the board file.
  */
 struct ion_platform_heap {
-	enum ion_heap_type type;
+	unsigned int type;
 	unsigned int id;
 	const char *name;
 	ion_phys_addr_t base;
