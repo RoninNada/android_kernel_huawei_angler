@@ -181,7 +181,7 @@ struct ion_heap_ops {
 struct ion_heap {
 	struct plist_node node;
 	struct ion_device *dev;
-	enum ion_heap_type type;
+	unsigned int type;
 	struct ion_heap_ops *ops;
 	unsigned long flags;
 	unsigned int id;
