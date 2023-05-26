@@ -325,6 +325,11 @@ ifneq ($(CONFIG_DHD_OF_SUPPORT),)
   DHDOFILES += dhd_custom_platdev.o
 endif
 
+ifeq ($(cc-name),clang)
+  EXTRA_CFLAGS += $(call cc-disable-warning, sometimes-uninitialized)
+endif
+
+
 ifneq ($(CONFIG_BCMDHD_SDIO),)
   DHDOFILES += bcmsdh.o bcmsdh_linux.o bcmsdh_sdmmc.o bcmsdh_sdmmc_linux.o
   DHDOFILES += dhd_cdc.o dhd_wlfc.o dhd_sdio.o
