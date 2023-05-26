@@ -157,7 +157,7 @@ enum ldr_status {
 	ERROR_INVALID
 };
 
-#if CYTTSP4_FW_UPGRADE || CYTTSP4_TTCONFIG_UPGRADE
+#if defined(CYTTSP4_FW_UPGRADE) || defined(CYTTSP4_TTCONFIG_UPGRADE)
 /*
  * return code:
  * -1: Firmware version compared is older
@@ -214,7 +214,7 @@ static int cyttsp4_check_firmware_version(struct cyttsp4_device *ttsp,
 }
 #endif /* CYTTSP4_FW_UPGRADE || CYTTSP4_TTCONFIG_UPGRADE */
 
-#if CYTTSP4_FW_UPGRADE
+#if defined(CYTTSP4_FW_UPGRADE)
 static u16 _cyttsp4_compute_crc(struct cyttsp4_device *ttsp, u8 * buf, int size)
 {
 	u16 crc = 0xffff;
@@ -1285,7 +1285,7 @@ static int upgrade_firmware_from_builtin_recovery(struct cyttsp4_device *ttsp)
 }
 #endif /*CONFIG_TOUCHSCREEN_HUAWEI_CYTTSP4_RECOVERY_FW_UPDATE */
 
-#if CYTTSP4_TTCONFIG_UPGRADE
+#if defined(CYTTSP4_TTCONFIG_UPGRADE)
 static int cyttsp4_upgrade_ttconfig(struct cyttsp4_device *ttsp,
 				    const u8 * ttconfig_data, int ttconfig_size)
 {
@@ -1803,7 +1803,7 @@ static void cyttsp4_fw_and_config_upgrade(struct work_struct
 		tp_log_err("%s: Fail get sysinfo pointer from core\n",
 			   __func__);
 
-#if !CYTTSP4_FW_UPGRADE
+#if !defined(CYTTSP4_FW_UPGRADE)
 	tp_log_info("%s: No FW upgrade method selected!\n", __func__);
 #endif
 
@@ -2089,7 +2089,7 @@ static int cyttsp4_loader_probe(struct cyttsp4_device *ttsp)
 
 	upgrade_dev = dev;
 
-#if CYTTSP4_FW_UPGRADE
+#if defined(CYTTSP4_FW_UPGRADE)
 	init_completion(&data->int_running);
 	init_completion(&data->sysinfo_update);
 #ifdef CONFIG_TOUCHSCREEN_CYPRESS_CYTTSP4_BINARY_FW_UPGRADE
@@ -2141,7 +2141,7 @@ static int cyttsp4_loader_release(struct cyttsp4_device *ttsp)
 	int retval = 0;
 
 	tp_log_debug("%s\n", __func__);
-#if CYTTSP4_FW_UPGRADE
+#if defined(CYTTSP4_FW_UPGRADE)
 	retval = cyttsp4_unsubscribe_attention(ttsp, CY_ATTEN_IRQ,
 					       cyttsp4_loader_attention,
 					       CY_MODE_BOOTLOADER);
