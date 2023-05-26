@@ -327,6 +327,7 @@ endif
 
 ifeq ($(cc-name),clang)
   EXTRA_CFLAGS += $(call cc-disable-warning, sometimes-uninitialized)
+  CFLAGS_dhd_rtt.o := $(call cc-disable-warning, unused-const-variable)
 endif
 
 
