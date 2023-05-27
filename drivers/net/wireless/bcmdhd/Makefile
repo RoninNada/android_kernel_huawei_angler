@@ -327,7 +327,11 @@ endif
 
 ifeq ($(cc-name),clang)
   EXTRA_CFLAGS += $(call cc-disable-warning, sometimes-uninitialized)
-  CFLAGS_dhd_rtt.o := $(call cc-disable-warning, unused-const-variable)
+  CFLAGS_dhd_common.o := $(call cc-disable-warning, typedef-redefinition)
+  CFLAGS_dhd_linux.o := $(call cc-disable-warning, typedef-redefinition)
+  CFLAGS_dhd_rtt.o := $(call cc-disable-warning, unused-const-variable) $(call cc-disable-warning, typedef-redefinition)
+  CFLAGS_wl_cfg80211.o := $(call cc-disable-warning, typedef-redefinition)
+  CFLAGS_wl_cfgvendor.o := $(call cc-disable-warning, typedef-redefinition)
 endif
 
 
