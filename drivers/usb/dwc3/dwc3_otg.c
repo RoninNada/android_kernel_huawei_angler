@@ -206,13 +206,13 @@ static int dwc3_otg_set_peripheral(struct usb_otg *otg,
 		dev_dbg(otg->phy->dev, "%s: set gadget %s\n",
 					__func__, gadget->name);
 		otg->gadget = gadget;
-		queue_delayed_work(system_nrt_wq, &dotg->sm_work, 0);
+		queue_delayed_work(system_wq, &dotg->sm_work, 0);
 	} else {
 		if (otg->phy->state == OTG_STATE_B_PERIPHERAL) {
 			dwc3_otg_start_peripheral(otg, 0);
 			otg->gadget = NULL;
 			otg->phy->state = OTG_STATE_UNDEFINED;
-			queue_delayed_work(system_nrt_wq, &dotg->sm_work, 0);
+			queue_delayed_work(system_wq, &dotg->sm_work, 0);
 		} else {
 			otg->gadget = NULL;
 		}
@@ -241,7 +241,7 @@ static int dwc3_otg_set_suspend(struct usb_phy *phy, int suspend)
 
 	if (suspend) {
 		set_bit(DWC3_OTG_SUSPEND, &dotg->inputs);
-		queue_delayed_work(system_nrt_wq,
+		queue_delayed_work(system_wq,
 			&dotg->sm_work,
 			msecs_to_jiffies(lpm_after_suspend_delay));
 	} else {
@@ -267,7 +267,7 @@ static void dwc3_ext_chg_det_done(struct usb_otg *otg, struct dwc3_charger *chg)
 	 * STOP chg_det as part of !BSV handling would reset the chg_det flags
 	 */
 	if (test_bit(B_SESS_VLD, &dotg->inputs))
-		queue_delayed_work(system_nrt_wq, &dotg->sm_work, 0);
+		queue_delayed_work(system_wq, &dotg->sm_work, 0);
 }
 
 /**
@@ -354,7 +354,7 @@ static void dwc3_ext_event_notify(struct usb_otg *otg,
 		if (!init) {
 			init = true;
 			if (!work_busy(&dotg->sm_work.work))
-				queue_delayed_work(system_nrt_wq,
+				queue_delayed_work(system_wq,
 							&dotg->sm_work, 0);
 
 			complete(&dotg->dwc3_xcvr_vbus_init);
@@ -362,7 +362,7 @@ static void dwc3_ext_event_notify(struct usb_otg *otg,
 			return;
 		}
 
-		queue_delayed_work(system_nrt_wq, &dotg->sm_work, 0);
+		queue_delayed_work(system_wq, &dotg->sm_work, 0);
 	}
 }
 
@@ -746,7 +746,7 @@ static void dwc3_otg_sm_work(struct work_struct *w)
 	}
 
 	if (work)
-		queue_delayed_work(system_nrt_wq, &dotg->sm_work, delay);
+		queue_delayed_work(system_wq, &dotg->sm_work, delay);
 }
 
 static void dwc3_otg_chg_check_timer_func(unsigned long data)
@@ -769,7 +769,7 @@ static void dwc3_otg_chg_check_timer_func(unsigned long data)
 		dotg->false_sdp_retry_count >= max_chgr_retry_count) {
 		dev_info(phy->dev, "DCP is detected as SDP\n");
 		set_bit(B_FALSE_SDP, &dotg->inputs);
-		queue_delayed_work(system_nrt_wq, &dotg->sm_work, 0);
+		queue_delayed_work(system_wq, &dotg->sm_work, 0);
 		return;
 	}
 	dotg->false_sdp_retry_count++;
